@@ -12,7 +12,6 @@ const html = fs.readFileSync(
 describe('index.html', () => {
   beforeEach(() => {
     document.documentElement.innerHTML = html.toString()
-    console.log('will run before every test')
   })
   describe('head', () => {
     test('it has a title', () => {

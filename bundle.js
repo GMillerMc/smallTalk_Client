@@ -1,11 +1,7 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 const postContent = document.getElementById("journalPost");
 const form = document.getElementById("form");
-const annoynmousName = document.getElementById("userName");
-const postButton = document.getElementById("postButton");
 const parentDiv = document.getElementById("posts");
-const giphyForm = document.getElementById("giphyForm");
-
 const API_Key = "yMYTtCg4jPmk6BxD19dklT7FUUfAMQAD";
 
 ///////////// Random Name function
@@ -78,7 +74,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const postContent = document.getElementById("journalPost");
-  if (postContent.textContent === "") {
+  if (postContent.value === "") {
     alert("Please input characters!");
   } else {
     const postData = {
@@ -308,7 +304,7 @@ function createPost(e, id) {
   commentBar.className = "postComments";
   commentBar.className = "commentBoxStyle";
   commentBar.id = `commentTextarea${id}`;
-  commentBar.maxLength = "20";
+  commentBar.maxLength = "30";
   commentBar.placeholder = "Make a comment";
   commentButton.className = "commentButton";
   commentButton.className = "commentFormBtn";
@@ -341,7 +337,7 @@ function createPost(e, id) {
   postContainer.appendChild(avatarContainer);
   postContainer.appendChild(newPost);
 
-  parentDiv.appendChild(postContainer);
+  parentDiv.prepend(postContainer);
 
   // Clear Input, add randomName
 
@@ -355,7 +351,7 @@ function createPost(e, id) {
 function getcommentinput(e, id) {
   e.preventDefault();
   const commentContent = document.getElementById(`commentTextarea${id}`);
-  if (commentContent.textContent === "") {
+  if (commentContent.value === "") {
     alert("You haven't added a comment");
   } else {
     const postData = {
@@ -615,10 +611,29 @@ function submitGif(e, id) {
         const array = data;
         array.push(gifImg);
         gifDisplay.removeChild(gifDisplay.firstChild);
+
+        const searchGif = document.getElementById(`searchGif-${id}`);
+        console.log(searchGif.textContent);
+        searchGif.value = "";
       });
   } else {
     alert("You have not previewed your gif!");
   }
 }
+
+module.exports = {
+  getRandomInt,
+  randomNameGenerator,
+  loadPosts,
+  fetchPost,
+  createPost,
+  getcommentinput,
+  reactCounterLike,
+  reactCounterSmile,
+  reactCounterSad,
+  gifReact,
+  previewGif,
+  submitGif,
+};
 
 },{}]},{},[1]);

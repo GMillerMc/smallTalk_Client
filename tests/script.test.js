@@ -2,91 +2,70 @@
  * @jest-environment jsdom
  */
 
- const fs = require('fs');
- const path = require('path');
- const html = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf8');
- global.fetch = require('jest-fetch-mock');
+const fs = require("fs");
+const path = require("path");
 
+const html = fs.readFileSync(path.resolve(__dirname, "../index.html"), "utf8");
+global.fetch = require("jest-fetch-mock");
 
-  // const getRandomInt = require('../client/script');
+let app;
 
-  // describe('body', () => {
-  //   it('it generates a number', () => {
-  //     let heading = document.querySelector('#form')
-  //     expect(heading).toBeTruthy()
-  //   })
-  // })
-  
+describe("app", () => {
+  beforeEach(() => {
+    document.documentElement.innerHTML = html.toString();
+    app = require("../client/script.js");
+  });
+  afterEach(() => {
+    fetch.resetMocks();
+  });
 
+  describe("requests", () => {
+    describe("testing random num generator", () => {
+      test("get a random number between two values", () => {
+        let min = 2;
+        let max = 10;
 
- let app;
-describe('app', () => {
-    beforeEach(() => {
-        document.documentElement.innerHTML = html.toString();
-        app = require('../client/script.js')
-    })
-    afterEach(() => {
-        fetch.resetMocks();
-    })
-    describe('requests', () => {
-      describe('getAllCats', () => {
-          test('it makes a get request to /cats', () => {
-              app.reactCounterSad();
-              expect(fetch).toHaveBeenCalledWith(expect.stringMatching(/\/cats$/))
-              expect(fetch.mock.calls[0][0]).toMatch(/cats$/)
-          })
-      })
-    })
-})
+        const int = app.getRandomInt(min, max);
 
+        expect(int).toBeGreaterThanOrEqual(min);
+        expect(int).toBeLessThan(max);
+      });
+    });
 
+    describe("check create post function", () => {
+      test("check that random name has been generated", () => {
+        const fakeSubmitEvent = {
+          preventDefault: jest.fn(),
+          target: {
+            text: "e.target.journalPost.value",
+            react: [0, 0, 0],
+            comments: [],
+          },
+        };
 
-describe('submitCat', () => {
-  test('it makes a post request to /cats with the cat data', () => {
-    const fakeSubmitEvent = {
-        preventDefault: jest.fn(),
-        target: {
-            name: { value: 'Bob' },
-            age: { value: 4 }
-        }
-    }
-    app.submitCat(fakeSubmitEvent);
-    expect(fetch.mock.calls[0][1]).toHaveProperty('method', 'POST');
-    expect(fetch.mock.calls[0][1]).toHaveProperty('body', JSON.stringify({ name: "Bob", age: 4 }));
-  })
-})
+        app.createPost(fakeSubmitEvent);
+        expect(app.randomNameGenerator()).toBeTruthy();
 
-describe('getMessage', () => {
-    test('it makes a request to /', () => {
-        app.getMessage();
-        expect(fetch).toHaveBeenCalled();
-    })
-})
+        app.gifReact(fakeSubmitEvent, 1);
+      });
+    });
 
-describe('render helpers', () => {
-  describe('renderMessage', () => {
-    test('it renders a received message on the page', () => {
-        app.renderMessage('testing, testing, 1 2 3');
-        expect(document.querySelector('body').textContent).toContain('testing, testing, 1 2 3')
-    })
-  })
-})
+    describe("testing gif react", () => {
+      test("check that random name has been generated", () => {
+        const fakeSubmitEvent = {
+          preventDefault: jest.fn(),
+          target: {
+            text: "e.target.journalPost.value",
+            react: [0, 0, 0],
+            comments: [],
+          },
+        };
+        // app.loadPosts(fakeSubmitEvent,1)
 
-describe('appendCat', () => {
-  test('it renders a new li on the page with the cat data', () => {
-      const liCount = document.querySelectorAll('li').length;
-      app.appendCat({ name: 'Testy', age: 42 });
-      const newLiCount = document.querySelectorAll('li').length;
-      expect(newLiCount).toEqual(liCount + 1)
-      expect(document.querySelector('section#cats').textContent).toContain("Testy");
-      expect(document.querySelector('section#cats').textContent).toContain(42);
-  })
-})
+        // const spy = jest.spyOn(app, loadPosts(fakeSubmitEvent,1));
 
- 
-
-
-
-
-
-
+        // expect(spy).toBe(true)
+      });
+    });
+  });
+});
