@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/GMillerMc/smallTalk_Client#readme",
   "devDependencies": {
-    "concurrently": "^7.2.0",
+    "concurrently": "^7.6.0",
     "http-server": "^14.1.0",
     "jest": "^28.1.0",
     "watchify": "^4.0.0"
